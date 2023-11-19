@@ -1,0 +1,53 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Habitaciones
+{% endblock title %}
+{% block headerleft %}
+    Habitaciones
+{% endblock headerleft %}
+{% block headerright %}
+    Habitaciones
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-md-12 p-0">
+                        {% for g in group_set %}
+                            {#                                <li class="page-item">#}
+                            {#                                    <a class="page-link" href="#">#}
+                            {#                                        <p class="page-month">{{ g.name }}</p>#}
+                            {#                                    </a>#}
+                            {#                                </li>#}
+                            <a class="btn  btn-outline-primary btn-app font-weight-bold border-primary" onclick="ReloadRoom({{ g.id }})">
+                                {#                                <span class="badge bg-success">{{ g.name }}</span>#}
+                                <i class="fa fa-desktop fa-2x"></i> {{ g.name }}
+                            </a>
+                        {% endfor %}
+                        {#                            #}
+                        {#                                <select class="form-control select2-danger">#}
+                        {#                                    {% for g in group_set %}#}
+                        {#                                        <option value="{{ g.id }}">{{ g.name }}</option>#}
+                        {#                                        {% endfor %}#}
+                        {#                                </select>#}
+                    </div>
+                </div>
+                <div class="card-body" id="order-grid">
+{#                    {% include "orders/order_grid.html" %}#}
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="modal fade" id="modal-order" tabindex="-1" role="dialog" data-backdrop="static"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+{% endblock body %}
+
+{% block extrajs %}
+    <script type="text/javascript" src="{% static 'orders/Order.js' %}">
+
+    </script>
+{% endblock extrajs %}

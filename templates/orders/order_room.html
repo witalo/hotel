@@ -1,0 +1,554 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Habitaciones
+{% endblock title %}
+{% block headerleft %}
+    <b class="text-primary">HABITACION Nº {{ room_obj.number }}{% if order %}/ Nº Orden:
+        {{ order.number }}{% endif %}</b>
+{% endblock headerleft %}
+{% block headerright %}
+    Habitacion
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title text-primary font-weight-bold text-uppercase">
+                                Habitacion {{ room_obj.type.name }}</h3>
+                            <input type="hidden" value="{{ room_obj.id }}" id="room" name="room">
+                            <input type="hidden" value="{% if order %}{{ order.id }}{% endif %}" id="order"
+                                   name="order">
+                            <div class="float-right">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group input-group-sm m-0">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text p-0 bg-primary"><span
+                                                        class="m-0 ml-1 mr-1">12H</span>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control text-right font-weight-bold"
+                                                   disabled
+                                                   value="{{ room_obj.noon|safe }}"
+                                                   id="price_noon"
+                                                   name="price_noon" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group input-group-sm m-0">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text p-0 bg-primary"><span
+                                                        class="m-0 ml-1 mr-1">24H</span>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control text-right font-weight-bold"
+                                                   disabled
+                                                   value="{{ room_obj.day|safe }}"
+                                                   id="price_day"
+                                                   name="price_day" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body pb-1">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm"
+                                                   value="{% if order %}{{ order.client.document }}{% endif %}"
+                                                   id="document"
+                                                   name="document"
+                                                   placeholder="Nº Documento">
+                                            <input type="hidden" value="{% if order %}{{ order.client.id }}{% endif %}"
+                                                   id="client" name="client">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm"
+                                                   value="{% if order %}{{ order.client.names }}{% endif %}" id="names"
+                                                   name="names"
+                                                   placeholder="Nombres y Apellidos">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-phone-alt"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm"
+                                                   value="{% if order %}{{ order.client.phone }}{% endif %}" id="phone"
+                                                   name="phone"
+                                                   placeholder="Nº Celular">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i
+                                                        class="far fa-address-book"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm"
+                                                   value="{% if order %}{{ order.client.address }}{% endif %}"
+                                                   id="address"
+                                                   name="address"
+                                                   placeholder="Direccion de domicilio">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="order_detail">
+                                <div class="col-md-12">
+                                    <div class="card card-primary card-outline mb-1">
+                                        <div class="card-header p-1 pt-2">
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-12 col-md-3 col-lg-3 align-self-center">
+                                                    <div class="form-group mb-1">
+                                                        <select class="form-control form-control-sm font-weight-bold"
+                                                                id="room_state"
+                                                                name="room_state">
+                                                            {% for s in state_set %}
+                                                                {% if s.0 == room_obj.state.type %}
+                                                                    <option selected
+                                                                            value="{{ s.0 }}">{{ s.1 }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ s.0 }}">{{ s.1 }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-3 col-lg-3 align-self-center">
+                                                    <div class="form-group mb-1">
+                                                        <input value="{% if order.init %}{{ order.init|date:'Y-m-d\TH:i' }}{% else %}{{ date_now }}{% endif %}"
+                                                               type="datetime-local"
+                                                               class="form-control form-control-sm"
+                                                               id="init"
+                                                               name="init">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-3 col-lg-3 align-self-center">
+                                                    <div class="form-group mb-1">
+                                                        <input value="{% if order.end %}{{ order.end|date:'Y-m-d\TH:i' }}{% else %}{{ date_now }}{% endif %}"
+                                                               type="datetime-local"
+                                                               class="form-control form-control-sm"
+                                                               id="end"
+                                                               name="end">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                                    <div class="input-group input-group-sm mb-1">
+                                                        <div class="input-group-prepend">
+                                                <span class="input-group-text p-0 bg-primary"><span
+                                                        class="m-0 ml-1 mr-1">TOTAL HABITACION</span>
+                                                </span>
+                                                        </div>
+                                                        <input type="text"
+                                                               class="form-control text-right font-weight-bold"
+                                                               style="width: 70px;"
+                                                               disabled
+                                                               value="{% if order.price %}{{ order.price|safe }}{% endif %}"
+                                                               id="total_room"
+                                                               name="total_room" placeholder="0.00">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body p-0">
+                                            <div class="mailbox-controls">
+                                                <!-- Check all button -->
+                                                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                                        class="far fa-square"></i>
+                                                </button>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default btn-sm"
+                                                            onclick="DeleteRowCheck()">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-success btn-sm"
+                                                        onclick="AddPerson({{ room_obj.person|safe }})">
+                                                    <i class="fa fa-male"></i> Persona adicional
+                                                </button>
+                                                <div class="float-right">
+                                                    <div class="input-group input-group-sm autocomplete"
+                                                         id="autocomplete-product">
+                                                        <input type="text" class="form-control autocomplete-input"
+                                                               id="search-product" placeholder="Buscar producto"
+                                                               name="search-product" style="width: 200px;">
+                                                        <div class="input-group-append">
+                                                            <div class="btn btn-primary">
+                                                                <i class="fas fa-search"></i>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="autocomplete-result-list small"></ul>
+                                                    </div>
+                                                </div>
+                                                <!-- /.float-right -->
+                                            </div>
+                                            <div class="table-responsive mailbox-messages">
+                                                <table class="table table-hover table-striped" style="width: 100%;">
+                                                    <tbody id="order_detail">
+                                                    {% for d in order.orderdetail_set.all %}
+                                                        <tr class="p-0" pk="{{ d.id }}" i="{{ forloop.counter }}"
+                                                            store="{% if d.store %}{{ d.store.id }}{% else %}0{% endif %}"
+                                                            product="{% if d.product %}{{ d.product.id }}{% else %}0{% endif %}">
+                                                            <td class="align-middle item-number p-1 text-center">
+                                                                <div class="icheck-primary">
+                                                                    <input type="checkbox" value="" id="{{ d.id }}">
+                                                                    <label for="{{ d.id }}"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td class="mailbox-star align-middle item-quantity">
+                                                                <div class="input-group input-group-sm">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="btn btn-primary btn-prev">
+                                                                            <i class="fa fa-minus-circle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <input type="number" min="0" step="1"
+                                                                           value="{{ d.quantity|safe }}"
+                                                                           class="form-control text-center input-quantity"
+                                                                           placeholder="0">
+                                                                    <div class="input-group-append">
+                                                                        <div class="btn btn-primary btn-next">
+                                                                            <i class="fa fa-plus-circle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="mailbox-subject align-middle item-name"
+                                                                description="
+
+                                                                        {% if d.product %}{{ d.product.name }}{% else %}{{ d.description }}{% endif %}">
+                                                                <b>Codigo:
+                                                                    {% if d.product %}{{ d.product.code }}{% else %}
+                                                                        -{% endif %}</b> -
+                                                                Descripción:
+                                                                {% if d.product %}{{ d.product.name }}{% else %}
+                                                                    {{ d.description }}{% endif %}...
+                                                            </td>
+                                                            <td class="mailbox-attachment align-middle item-price">
+                                                                <input type="number"
+                                                                       class="form-control form-control-sm input-price text-right w-100"
+                                                                       style="width: 85px;"
+                                                                       value="{{ d.price|safe }}">
+                                                            </td>
+                                                            <td class="align-middle mailbox-date item-amount p-1 text-right">{{ d.amount|safe }}</td>
+                                                            <td class="align-middle detail-delete p-1 text-center item-delete">
+                                                                <button type="button" class="btn btn-danger rounded"><i
+                                                                        class="fa fa-trash-alt"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.mail-box-messages -->
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer p-0">
+                                            <div class="mailbox-controls">
+                                                <!-- Check all button -->
+                                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                                    <i class="far fa-square"></i>
+                                                </button>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default btn-sm"
+                                                            onclick="DeleteRowCheck()">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-success btn-sm"
+                                                        onclick="AddPerson({{ room_obj.person|safe }})">
+                                                    <i class="fa fa-male"></i> Persona adicional
+                                                </button>
+                                                <div class="float-right">
+                                                    {#                                            <label class="text-primary">TOTAL</label>#}
+                                                    <div class="input-group input-group-sm mb-2">
+                                                        <div class="input-group-prepend">
+                                                <span class="input-group-text p-0"><span
+                                                        class="small bs-stepper-circle bg-primary m-0 ml-1 mr-1">S/.</span>
+                                                </span>
+                                                        </div>
+                                                        <input type="text"
+                                                               class="form-control text-right font-weight-bold"
+                                                               style="width: 100px;"
+                                                               disabled
+                                                               id="subtotal"
+                                                               name="subtotal" placeholder="0.00">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3">
+                                    <label class="mb-0">Fecha termino reintegro</label>
+                                    <input value="{% if order.init %}{{ order.date_refund|date:'Y-m-d\TH:i' }}{% endif %}"
+                                           type="datetime-local" class="form-control form-control-sm" id="date"
+                                           name="date" disabled="true">
+                                </div>
+                                <div class="col-sm-12 col-md-6"></div>
+                                <div class="col-sm-12 col-md-3">
+                                    <label class="text-primary mb-0">TOTAL REINTEGRO</label>
+                                    <div class="input-group input-group-sm mb-2">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text p-0"><span
+                                                        class="small bs-stepper-circle bg-primary m-0 ml-1 mr-1">S/.</span>
+                                                </span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control text-right font-weight-bold"
+                                               id="total_refund" value="{{ order.refund|safe }}"
+                                               name="total_refund" placeholder="0.00" disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer pb-1 pt-1">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4 align-self-center">
+                                    <div class="btn-group">
+                                        {#                                        <button type="button" id="btn-print" class="btn btn-outline-warning"#}
+                                        {#                                                onclick="PrintOrderRefund({{ order.id }})"><i#}
+                                        {#                                                class="fa fa-cloud-download-alt"></i> Imprimir Reintegro#}
+                                        {#                                        </button>#}
+                                        {% if order.refund %}
+                                            <button type="button" id="btn-print" class="btn btn-outline-warning"
+                                                    onclick="PrintOrder({{ order.id }})"><i
+                                                    class="fa fa-cloud-download-alt"></i> Imprimir Ticket
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-5"></div>
+                                <div class="col-sm-12 col-md-3">
+                                    <label class="text-primary mb-0">TOTAL</label>
+                                    <div class="input-group input-group-sm mb-2">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text p-0"><span
+                                                        class="small bs-stepper-circle bg-primary m-0 ml-1 mr-1">S/.</span>
+                                                </span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control text-right font-weight-bold"
+                                               disabled
+                                               id="total"
+                                               name="total" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-warning card-outline">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-4 col-lg-4">
+                                            <div class="form-group mb-0">
+                                                <label for="account" class="mb-0">Caja/Cuenta</label>
+                                                <select class="form-control" id="account" name="account" pk="">
+                                                    <option value="">SELECCIONE</option>
+                                                    {% for a in account_set %}
+                                                        <option value="{{ a.id }}">{{ a.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 col-lg-4">
+                                            <div class="form-group mb-0">
+                                                <label for="amount" class="mb-0">Monto</label>
+                                                <input type="number" step="0.01" min="0.00"
+                                                       class="form-control text-right"
+                                                       id="amount"
+                                                       name="amount"
+                                                       placeholder="0.00" value="">
+                                                <input type="hidden" value="0" id="order" name="order">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3 col-lg-3">
+                                            <div class="form-group mb-0">
+                                                <label for="code" class="mb-0">Codigo</label>
+                                                <input type="text" class="form-control" id="code" name="code"
+                                                       placeholder="Codigo ..." value="">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-1 col-lg-1 align-self-end">
+                                            <a class="bs-stepper-circle bg-primary" id="btn-add"
+                                               onclick="AddNewPayment()"><i
+                                                    class="fa fa-plus-circle"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 align-self-end">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6">
+                                            <a type="button" class="btn btn-secondary w-100" id="btn-close"
+                                               href="{% url 'orders:order' %}"><i
+                                                    class="fa fa-cannabis"></i>Cancelar</a>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <button type="button" class="btn btn-success w-100" id="save-order"
+                                                    onclick="CreateOrder()"><i
+                                                    class="fa fa-cloud-download-alt"></i> Guardar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm table-striped">
+                                <thead class="bg-gradient-lightblue">
+                                <tr class="text-center">
+                                    <td class="align-middle">Nº</td>
+                                    <td class="align-middle">Fecha y Hora</td>
+                                    <td class="align-middle">Descripcion</td>
+                                    <td class="align-middle">Codigo</td>
+                                    <td class="align-middle">Importe</td>
+                                    <td class="align-middle">Eliminar</td>
+                                </tr>
+                                </thead>
+                                <tbody id="detail_payment">
+                                {% for p in order.payments_set.all %}
+                                    <tr class="payment-row p-0" pk="{{ p.id }}" a="{{ p.account.id }}"
+                                        i="{{ forloop.counter }}">
+                                        <td class="align-middle payment-number p-1 text-center">
+                                            <span class="bs-stepper-circle bg-gradient-lightblue">{{ forloop.counter }}</span>
+                                        </td>
+                                        <td class="align-middle payment-date p-1 text-center">{{ p.create_at|date:'d/m/Y g:i A' }}</td>
+                                        <td class="align-middle payment-account p-1">{{ p.account.name }}</td>
+                                        <td class="align-middle payment-code p-1">{{ p.code }}</td>
+                                        <td class="align-middle payment-amount p-1 text-right">{{ p.amount|safe }}</td>
+                                        <td class="align-middle payment-delete p-1 text-center">
+                                            <button type="button" class="btn btn-sm btn-outline-danger rounded"><i
+                                                    class="fa fa-trash-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div0 class="card-footer">
+                            <div class="float-right">
+                                <label class="text-primary mb-0">TOTAL PAGO</label>
+                                <div class="input-group input-group-sm mb-2">
+                                    <div class="input-group-prepend">
+                                                <span class="input-group-text p-0"><span
+                                                        class="small bs-stepper-circle bg-primary m-0 ml-1 mr-1">S/.</span>
+                                                </span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control text-right font-weight-bold"
+                                           disabled
+                                           id="total-payment"
+                                           name="total-payment" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div0>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+{#                    <h3 class="card-title text-uppercase">PRODUCTOS</h3>#}
+                    <div class="float-right">
+                        <div class="input-group input-group-sm autocomplete"
+                             id="autocomplete-product">
+                            <input type="text" class="form-control autocomplete-input"
+                                   id="search-product" placeholder="Buscar producto"
+                                   name="search-product" style="width: 200px;">
+                            <div class="input-group-append">
+                                <div class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                            <ul class="autocomplete-result-list small"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" style="height: 71.2vh; max-height: 71.2vh; overflow: auto;" id="card_product">
+                    {% for p in product_set %}
+                        <div class="row" pk="{{ p.id }}">
+                            <div class="card card-primary w-100 item-product">
+                                <div class="ribbon-wrapper ribbon-lg">
+                                    <div class="ribbon bg-success">
+                                        {{ p.code }}
+                                    </div>
+                                </div>
+                                <div class="card-header">
+                                    <h3 class="card-title text-uppercase"><i></i>{{ p.name }}</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <img src="{% static 'admin/dist/img/user2-160x160.jpg' %}"
+                                         class="img-circle img-fluid" alt="user-avatar">
+                                </div>
+                                <div class="card-footer text-center card-price">
+                                    <button type="button" class="btn btn-outline-primary font-weight-bold btn-price"
+                                            onclick="AddNewRow({{ p.id }})"><i
+                                            class="fa fa-tags fa-1x"></i> S/. {{ p.price|safe }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="pdfModal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+         aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h6 class="modal-title">DOCUMENTO</h6>
+                </div>
+                <div class="modal-body">
+                    <iframe src="" width="100%" height="680px" id="pdfFrame"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close-ticket" class="btn btn-secondary" data-dismiss="modal">Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block extrajs %}
+    <script type="text/javascript" src="{% static 'orders/OrderRoom.js' %}">
+
+    </script>
+{% endblock extrajs %}

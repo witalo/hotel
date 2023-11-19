@@ -1,0 +1,121 @@
+{% load static %}
+<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header bg-primary">
+            <h6 class="modal-title  text-white ">PERMISOS USUARIO</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body p-2">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title text-warning text-uppercase">USUARIO: {{ user_obj.first_name }} {{ user_obj.last_name }}</h3>
+                    <input type="hidden" value="{{ user_obj.id }}" id="user" name="user">
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="Buscar ...">
+                            <div class="input-group-append">
+                                <div class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <div class="mailbox-controls">
+                        <!-- Check all button -->
+                        <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                class="far fa-square"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <!-- /.btn-group -->
+                        <button type="button" class="btn btn-default btn-sm">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <div class="float-right">
+                            1-{{ group_user_set|length }}/{{ group_user_set|length }}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <!-- /.btn-group -->
+                        </div>
+                        <!-- /.float-right -->
+                    </div>
+                    <div class="table-responsive mailbox-messages">
+                        <table class="table table-hover table-striped">
+                            <tbody id="permission_list">
+                             {% for p in group_user_set %}
+                                <tr>
+                                    <td class="item-check">
+                                        <div class="icheck-warning">
+                                            <input type="checkbox" {% if p.status %}checked{% endif %} value="{{ p.pk }}" id="{{ p.pk }}">
+                                            <label for="{{ p.pk }}"></label>
+                                        </div>
+                                    </td>
+                                    <td class="mailbox-star"><a href="#"><i class="far fa-check-circle text-success"></i></a></td>
+                                    <td class="mailbox-name"><a href="#" class="text-warning">{{ p.group_name }}</a></td>
+                                    <td class="mailbox-subject"><b>{{ p.group_name }}</b> - El usuario podra visualizar, crear, actualizar y eliminar registros...
+                                    </td>
+                                    <td class="mailbox-date"><i class="fas fa-business-time"></i></td>
+                                </tr>
+                             {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- /.table -->
+                    </div>
+                    <!-- /.mail-box-messages -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer p-0">
+                    <div class="mailbox-controls">
+                        <!-- Check all button -->
+                        <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                            <i class="far fa-square"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <!-- /.btn-group -->
+                        <button type="button" class="btn btn-default btn-sm">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <div class="float-right">
+                            1-{{ group_user_set|length }}/{{ group_user_set|length }}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <!-- /.btn-group -->
+                        </div>
+                        <!-- /.float-right -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-1">
+                <button type="button" class="btn btn-secondary" id="btn-modal-close" data-dismiss="modal">Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'js/users/UserPermission.js' %}">
+</script>

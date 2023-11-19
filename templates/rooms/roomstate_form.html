@@ -1,0 +1,59 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Estado Habitacion
+{% endblock title %}
+{% block headerleft %}
+    Estado Habitacion
+{% endblock headerleft %}
+{% block headerright %}
+    Estado Habitacion
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Formulario Estado Habitacion</h3>
+                </div>
+                <form method="post" id="form-roomstate">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>{{ form.name.label }}:</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
+                                </div>
+                                {{ form.name }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form.type.label }}</label>
+                                {{ form.type }}
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form.color.label }}</label>
+                            <div class="input-group my-colorpicker2 colorpicker-element" data-colorpicker-id="2">
+                                {{ form.color }}
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-square"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar datos</button>
+                        <a type="button" class="btn btn-secondary" href="{% url 'rooms:roomstate' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+{% block extrajs %}
+    <script type="text/javascript" src="{% static 'rooms/RoomState.js' %}">
+
+    </script>
+{% endblock extrajs %}

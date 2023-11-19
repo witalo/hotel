@@ -1,0 +1,41 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Proveedor
+{% endblock title %}
+{% block headerleft %}
+    Proveedor
+{% endblock headerleft %}
+{% block headerright %}
+    Proveedor
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Formulario proveedor</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form method="post" id="form-client">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        {{ form.as_p }}
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar datos</button>
+                        <a type="button" class="btn btn-secondary" href="{% url 'providers:provider' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+{% block extrajs %}
+    <script src="{% static 'js/providers/ProviderForm.js' %}">
+
+    </script>
+{% endblock extrajs %}

@@ -1,0 +1,45 @@
+{% load static %}
+<div>
+    <div class="btn-group w-100 mb-2">
+        <a class="btn bg-gradient-info active" href="javascript:void(0)" data-filter="all">
+             Todos </a>
+        {% for t in type_set %}
+            <a class="btn bg-gradient-info" href="javascript:void(0)"
+               data-filter="{{ t.id }}">{{ t.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="mb-2">
+        <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Mezclar </a>
+        <div class="float-right">
+            <select class="custom-select" style="width: auto;" data-sortOrder>
+                <option value="index"> Ordenar por posicion</option>
+                <option value="sortData"> Ordenar por datos personalizados</option>
+            </select>
+            <div class="btn-group">
+                <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascendente </a>
+                <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descendente </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="filter-container" id="room-list">
+        {% for r in room_set %}
+            <div class="filtr-item col-sm-2 p-1" data-category="{{ r.type.id }}"
+                 data-sort="white sample">
+                <a href="{% url 'orders:order_room' r.id %}" class="img-fluid mb-2 w-100">
+                    <div class="ribbon-wrapper ribbon-lg m-1">
+                        <div class="ribbon bg-gradient-purple">
+                            {{ r.type.name }}
+                        </div>
+                    </div>
+                    <img src="https://via.placeholder.com/300/{{ r.state.color }}//FFFFFF?text={{ r.number }}"
+                         class="img-fluid w-100"
+                         alt="white sample"/>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'orders/OrderGrid.js' %}"></script>

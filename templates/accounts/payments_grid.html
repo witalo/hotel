@@ -1,0 +1,53 @@
+<table class="table table-sm table-striped">
+    <thead class="bg-primary">
+    <tr class="text-center">
+        <td class="align-middle">Nº</td>
+        <td class="align-middle">TIPO</td>
+        <td class="align-middle">ESTADO</td>
+        <td class="align-middle">ORDEN</td>
+        <td class="align-middle">CLIENTE</td>
+        <td class="align-middle">FECHA</td>
+        <td class="align-middle">MONTO</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in payment_set %}
+        <tr class="text-center" pk="{{ p.id }}">
+            <td class="align-middle p-1">{{ forloop.counter }}</td>
+            <td class="align-middle p-1 font-weight-bold
+             {% if p.type == 'I' %}
+             text-primary
+             {% elif p.type == 'E' %}
+             text-danger
+             {% elif p.type == 'A' %}
+             text-warning
+             {% elif p.type == 'C' %}
+             text-warning
+             {% else %}
+             text-info
+             {% endif %}">
+                {{ p.get_type_display }}
+            </td>
+            <td class="align-middle p-1">{{ p.get_payment_display }}</td>
+            <td class="align-middle p-1">
+                {% if p.order %}
+                    {{ p.order.number }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td class="align-middle p-1 text-left text-uppercase">
+                {% if p.order.client %}
+                    {{ p.order.client.names }}
+                {% elif p.order.provider %}
+                    {{ p.order.provider.names }}
+                {% else %}
+                    {{ p.get_type_display }}
+                {% endif %}
+            </td>
+            <td class="align-middle p-1">{{ p.create_at|date:'d/m/Y h:i A' }}</td>
+            <td class="align-middle p-1 text-right font-weight-bold"><span class="float-left">S/.</span> {{ p.amount|safe }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

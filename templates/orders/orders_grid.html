@@ -1,0 +1,64 @@
+<table class="table table-sm table-striped">
+    <thead class="bg-primary">
+    <tr class="text-center small">
+        <td class="align-middle">Nº</td>
+        <td class="align-middle">ESTADO</td>
+        <td class="align-middle">HABITACION</td>
+        <td class="align-middle">REINTEGRO</td>
+        <td class="align-middle">FECHA:HORA</td>
+        <td class="align-middle">CLIENTE/PROVEEDOR</td>
+        <td class="align-middle">USUARIO</td>
+        <td class="align-middle">TICKETS</td>
+        <td class="align-middle">TOTAL</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for o in order_set %}
+        <tr class="text-center small" pk="{{ o.id }}">
+            <td class="align-middle p-1 font-weight-bold">{{ o.number }}</td>
+            <td class="align-middle p-1">{{ o.get_status_display }}</td>
+            <td class="align-middle p-1">
+                {% if o.room %}
+                    HABITACION Nº {{ o.room.number }}<br>
+                    PRECIO: S/. {{ o.price|safe }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td class="align-middle p-1">
+                {% if o.refund %}
+                    HABITACION: Nº {{ o.room.number }}<br>
+                    PRECIO REINTEGRO: S/. {{ o.refund|safe }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td class="align-middle p-1">
+                FI:{{ o.init|date:'d/m/Y h:i A' }}<br>
+                FT:{{ o.end|date:'d/m/Y h:i A' }}<br>
+                {% if o.refund %}
+                    FR:{{ o.date_refund|date:'d/m/Y h:i A' }}
+                {% endif %}
+            </td>
+            <td class="align-middle p-1 text-left text-uppercase">
+                {% if o.client %}
+                    {{ o.client.names }}
+                {% elif o.provider %}
+                    {{ o.provider.names }}
+                {% else %}
+                    {{ o.get_type_display }}
+                {% endif %}
+            </td>
+            <td class="align-middle p-1">
+                <i class="fa fa-male fa-1x"></i>:{{ o.user.username }}
+            </td>
+           <td class="align-middle p-1">
+                <button type="button" class="btn btn-sm btn-outline-warning" onclick="Ticket({{ o.id }})"><i class="fa fa-cloud-download-alt"></i> Ticket Habitacion</button>
+                <button type="button" class="btn btn-sm btn-outline-warning" onclick="TicketRefund({{ o.id }})"><i class="fa fa-cloud-download-alt"></i> Ticket Reintegro</button>
+            </td>
+            <td class="align-middle p-1 text-right font-weight-bold"><span
+                    class="float-left">S/.</span> {{ o.total|safe }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

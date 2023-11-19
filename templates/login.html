@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="shortcut icon" href="{% static 'admin/dist/icon/icon.ico' %}">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'admin/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{% static 'admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'admin/dist/css/adminlte.min.css' %}">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="login-logo mb-0">
+       <img src="{% static 'admin/images/logos.png' %}" alt=""
+                 class="brand-image w-75"
+                 style="opacity: .9">
+    </div>
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="{% url 'home' %}" class="h5"><b>HOSTAL</b></a>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.username }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user-circle"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ form.password }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success btn-block"><i class="fab fa-app-store mr-2"></i>
+                            Ingresar
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="social-auth-links text-center mt-3 mb-3">
+                <a href="#" class="btn btn-block btn-outline-primary">
+                    <i class="fa fa-lock mr-2"></i> Olvidé mi contraseña
+                </a>
+            </div>
+            <div class="row align-middle text-center">
+                <p class="text-primary font-italic text-center col-12 m-0 h5">Hostal</p>
+                <p class="text-primary font-italic text-center col-12 m-0 h6">2023</p>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{% static 'admin/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'admin/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'admin/dist/js/adminlte.min.js' %}"></script>
+</body>
+</html>

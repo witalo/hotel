@@ -1,0 +1,42 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Caja
+{% endblock title %}
+{% block headerleft %}
+    Caja
+{% endblock headerleft %}
+{% block headerright %}
+    Caja
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Formulario de caja</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form method="post" id="form-account">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        {{ form.as_p }}
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar datos</button>
+                        <a type="button" class="btn btn-secondary" href="{% url 'accounts:account' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+{% block extrajs %}
+    <script src="{% static 'accounts/AccountForm.js' %}">
+
+    </script>
+{% endblock extrajs %}

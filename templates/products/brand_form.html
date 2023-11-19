@@ -1,0 +1,38 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Marca Producto
+{% endblock title %}
+{% block headerleft %}
+    Marca Producto
+{% endblock headerleft %}
+{% block headerright %}
+    Marca Producto
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Formulario Marca Producto</h3>
+                </div>
+                <form method="post" id="form-brand">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar datos</button>
+                        <a type="button" class="btn btn-secondary" href="{% url 'products:brand' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+{% block extrajs %}
+    <script src="">
+
+    </script>
+{% endblock extrajs %}

@@ -1,0 +1,134 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Usuarios
+{% endblock title %}
+{% block headerleft %}
+    Usuarios
+{% endblock headerleft %}
+{% block headerright %}
+    Usuarios
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Listado de usuarios</h5>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fas fa-wrench"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <a href="{% url 'users:user_create' %}" class="dropdown-item">Nuevo Usuario</a>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            <thead>
+                            <tr class="text-center">
+                                <th>Nº</th>
+                                <th>Documento</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Telefono</th>
+                                <th>Corroe</th>
+                                <th>Usuario</th>
+                                <th>Foto</th>
+                                <th>Permisos</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody id="user-list">
+                            {% if user_set %}
+                                {% for u in user_set %}
+                                    <tr pk="{{ u.id }}">
+                                        <td class="align-middle text-center"><a href="#">{{ forloop.counter }}</a></td>
+                                        <td class="align-middle text-center">{{ u.document }}</td>
+                                        <td class="align-middle">{{ u.first_name }}</td>
+                                        <td class="align-middle">{{ u.last_name }}</td>
+                                        <td class="align-middle text-center">{{ u.phone }}</td>
+                                        <td class="align-middle">{{ u.email }}</td>
+                                        <td class="align-middle">{{ u.username }} </td>
+                                        <td class="align-middle text-center">{{ u.avatar }} </td>
+                                        <td class="align-middle text-center">
+                                            <button type="button" class="btn btn-warning btn-sm btn-permission" onclick="ShowModalUserPermission({{ u.id }})">
+                                                <i class="fas fa-check-circle">
+                                                </i>
+                                                Permisos
+                                            </button>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <a class="btn btn-primary btn-sm btn-edit" href="{% url 'users:user_update' u.id %}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                Editar
+                                            </a>
+                                            <a class="btn btn-danger btn-sm btn-delete" href="{% url 'users:user_delete' u.id %}">
+                                                <i class="fas fa-trash-alt">
+                                                </i>
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="8" class="align-middle text-center font-italic"><a href="#">No existen usuarios registrados</a></td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- ./card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-3 col-6">
+                            <!-- /.description-block -->
+                        </div>
+                        <div class="col-sm-3 col-6">
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-6">
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-6">
+                            <div class="description-block">
+                                <h4 class="description-header">Total Usuarios = {{ user_set.count }}</h4>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="modal fade" id="modal-user-permission" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+{% endblock body %}
+
+{% block extrajs %}
+<script type="text/javascript" src="{% static 'js/users/UserList.js' %}">
+</script>
+{% endblock extrajs %}

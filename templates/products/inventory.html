@@ -1,0 +1,81 @@
+{% load static %}
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header bg-primary">
+            <h6 class="modal-title  text-white ">STOCK PRODUCTO</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body p-2">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title text-primary font-weight-bold text-uppercase">PRODUCTO: {{ product_obj.name }}</h3>
+                    <input type="hidden" value="{{ product_obj.id }}" id="product-pk" name="product-pk">
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body" id="inventory-list">
+                    {% for i in inventory %}
+                        <div class="row subsidiary-row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Serie</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-check"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control text-primary text-center"
+                                               value="{{ i.serial }}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Sucursal</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-cloud"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control text-primary" value="{{ i.name }}"
+                                               disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 subsidiary-stock">
+                                <div class="form-group">
+                                    <label>Stock Producto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i
+                                                    class="fa fa-cloud-download-alt"></i></span>
+                                        </div>
+                                        <input type="number" class="form-control text-right input-stock"
+                                               {% if i.val %}disabled{% endif %}
+                                               value="{% if i.val %}{{ i.stock|safe }}{% endif %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 subsidiary-button align-self-center text-center">
+                                {% if i.val %}
+                                    <i class="fa fa-check-circle text-success fa-2x"></i>
+                                {% else %}
+                                    <button type="button" class="btn btn-success btn-stock" s="{{ i.id }}"><i class="fa fa-check"></i> Crear
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer p-0">
+
+                </div>
+            </div>
+            <div class="modal-footer p-1">
+                <button type="button" class="btn btn-secondary" id="btn-modal-close" data-dismiss="modal">Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'products/ProductInventory.js' %}">
+</script>

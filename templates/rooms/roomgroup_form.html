@@ -1,0 +1,38 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Piso Habitaciones
+{% endblock title %}
+{% block headerleft %}
+    Piso Habitaciones
+{% endblock headerleft %}
+{% block headerright %}
+    Piso Habitaciones
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Formulario Piso Habitaciones</h3>
+                </div>
+                <form method="post" id="form-roomgroup">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar datos</button>
+                        <a type="button" class="btn btn-secondary" href="{% url 'rooms:roomgroup' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+{% block extrajs %}
+    <script src="">
+
+    </script>
+{% endblock extrajs %}

@@ -1,0 +1,160 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Productos
+{% endblock title %}
+{% block headerleft %}
+    Productos
+{% endblock headerleft %}
+{% block headerright %}
+    Productos
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2 col-lg-2">
+                            <div class="form-group mb-1">
+                                <a class="btn btn-sm btn-primary" href="{% url 'products:product_create' %}"><i
+                                        class="fa fa-edit"></i> Nuevo
+                                    producto
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2 col-lg-2"></div>
+                        <div class="col-sm-12 col-md-2 col-lg-2"></div>
+                        <div class="col-sm-12 col-md-2 col-lg-2"></div>
+                        <div class="col-sm-12 col-md-2 col-lg-2"></div>
+                        <div class="col-sm-12 col-md-2 col-lg-2">
+                            <div class="form-group mb-1">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" name="table_search" class="form-control float-right"
+                                           placeholder="Buscar...">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-striped projects">
+                        <thead>
+                        <tr class="text-center border-top bg-gradient-dark">
+                            <th class="align-middle">Nº</th>
+                            <th class="align-middle">Codigo</th>
+                            <th class="align-middle">Nombre</th>
+                            <th class="align-middle">Descripcion</th>
+                            <th class="align-middle">Marca Producto</th>
+                            <th class="align-middle">Precio</th>
+                            <th class="align-middle">Prioridad</th>
+                            <th class="align-middle">Estado</th>
+                            <th class="align-middle">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for p in products %}
+                            <tr pk="{{ p.id }}">
+                                <td class="align-middle text-center"><span
+                                        class="bs-stepper-circle bg-primary">{{ forloop.counter }}</span></td>
+                                <td class="align-middle text-center">{{ p.code }}</td>
+                                <td class="align-middle">{{ p.name }}</td>
+                                <td class="align-middle">{{ p.description }}</td>
+                                <td class="align-middle text-center">{{ p.product_brand.name }}</td>
+                                <td class="align-middle text-right">{{ p.price|safe }}</td>
+                                <td class="align-middle text-center">
+                                    {% if p.is_priority %}
+                                        Incluido
+                                    {% else %}
+                                        Excluido
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle text-center">
+                                    {% if p.is_state %}
+                                        Activo
+                                    {% else %}
+                                        Inactivo
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle project-actions text-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-danger">Acciones</button>
+                                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu" style="">
+                                            <a class="dropdown-item" href="{% url 'products:product_update' p.id %}"><i
+                                                    class="fa fa-pencil-alt"></i> Editar</a>
+                                            <a class="dropdown-item" href="{% url 'products:product_delete' p.id %}"><i
+                                                    class="fa fa-trash-alt"></i> Eliminar</a>
+                                            <a class="dropdown-item" href="#" onclick="ShowModalInventory({{ p.id }})"><i
+                                                    class="fa fa-archive"></i> Inventario</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-archive"></i> Kardex</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <nav aria-label="Contacts Page Navigation">
+                        <ul class="pagination justify-content-center m-0">
+
+                            {% if products.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1">Primera</a></li>
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ products.previous_page_number }}">Anterior</a>
+                                </li>
+                            {% endif %}
+                            <li class="page-item active"><a class="page-link">Página {{ products.number }}
+                                de {{ products.paginator.num_pages }}</a></li>
+                            {% if products.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Siguiente</a>
+                                </li>
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ products.paginator.num_pages }}">Ultima</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {#                    <div class="pagination">#}
+                    {#                        <span class="step-links">#}
+                    {#                            {% if products.has_previous %}#}
+                    {#                                <a href="?page=1">&laquo; primera</a>#}
+                    {#                                <a href="?page={{ products.previous_page_number }}">anterior</a>#}
+                    {#                            {% endif %}#}
+                    {#                            <span class="current-page">#}
+                    {#                                Página {{ products.number }} de {{ products.paginator.num_pages }}.#}
+                    {#                            </span>#}
+                    {#                            {% if products.has_next %}#}
+                    {#                                <a href="?page={{ products.next_page_number }}">siguiente</a>#}
+                    {#                                <a href="?page={{ products.paginator.num_pages }}">última &raquo;</a>#}
+                    {#                            {% endif %}#}
+                    {#                        </span>#}
+                    {#                    </div>#}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="modal-inventory" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+{% endblock body %}
+
+{% block extrajs %}
+
+    <script type="text/javascript" src="{% static 'products/ProductList.js' %}">
+
+    </script>
+{% endblock extrajs %}
+

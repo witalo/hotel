@@ -1,0 +1,117 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Estado Habitacion
+{% endblock title %}
+{% block headerleft %}
+    Estado Habitacion
+{% endblock headerleft %}
+{% block headerright %}
+    Estado Habitacion
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Listado de estados habitacion</h5>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fas fa-wrench"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <a href="{% url 'rooms:roomstate_create' %}" class="dropdown-item">Nuevo estado habitacion</a>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table m-0 table-striped">
+                            <thead>
+                            <tr class="text-center">
+                                <th>Nº</th>
+                                <th>Descripcion</th>
+                                <th>Color</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody id="brand-list">
+                            {% if roomstate_set %}
+                                {% for t in roomstate_set %}
+                                    <tr pk="{{ t.id }}">
+                                        <td class="align-middle text-center"><a href="#">{{ forloop.counter }}</a></td>
+                                        <td class="align-middle text-center">{{ t.name }}</td>
+                                        <td class="align-middle text-center">
+                                           <input type="text" class="form-control text-center text-white font-weight-bold" disabled value="#{{ t.color }}" style="background: {{ t.get_color }}">
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <a class="btn btn-info btn-sm btn-edit" href="{% url 'rooms:roomstate_update' t.id %}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                Editar
+                                            </a>
+                                            <a class="btn btn-danger btn-sm btn-delete" href="{% url 'rooms:roomstate_delete' t.id %}">
+                                                <i class="fas fa-trash-alt">
+                                                </i>
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center align-middle"><a href="#">No existen estados de habitacion registradas</a></td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- ./card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <!-- /.description-block -->
+                        </div>
+                        <div class="col-sm-3">
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3">
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3">
+                            <div class="description-block">
+                                <h4 class="description-header">Total Estado Habitacion = {{ roomstate_set.count }}</h4>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+{% endblock body %}
+
+{% block extrajs %}
+
+    <script type="text/javascript">
+
+    </script>
+{% endblock extrajs %}

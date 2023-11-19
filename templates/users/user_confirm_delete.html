@@ -1,0 +1,44 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+    Usuario
+{% endblock title %}
+{% block headerleft %}
+    Usuario
+{% endblock headerleft %}
+{% block headerright %}
+    Usuario
+{% endblock headerright %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Confirmacion de la eliminacion del usuario</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-left">Usuario: {{ user.first_name }} {{ user.last_name }}</span>
+                            <span class="direct-chat-timestamp float-right">Confirme por favor!</span>
+                        </div>
+                        <img class="direct-chat-img" src="{% if user.avatar %}{{ user.avatar }}{% else %}{% static 'dist/img/user2-160x160.jpg' %}{% endif %}"
+                             alt="message user image">
+                        <div class="direct-chat-text">
+                            ¿Desea eliminar el registro del usuario {{ object.first_name }} {{ object.last_name }}?
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <a type="button" class="btn btn-secondary" href="{% url 'users:user' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

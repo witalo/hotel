@@ -1,0 +1,293 @@
+{% load static %}
+<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header bg-primary">
+            <h6 class="modal-title  text-white "></h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body p-2">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title text-primary font-weight-bold text-uppercase">
+                        Habitacion: {{ room_obj.number }} {% if order %} / Nº Orden: {{ order.number }}{% endif %}</h3>
+                    <input type="hidden" value="{{ room_obj.id }}" id="room" name="room">
+                    <input type="hidden" value="{% if order %}{{ order.id }}{% endif %}" id="order" name="order">
+                    <div class="float-right">
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group input-group-sm m-0">
+                                    <div class="input-group-prepend">
+                                                <span class="input-group-text p-0 bg-danger"><span
+                                                        class="m-0 ml-1 mr-1">12 HORAS</span>
+                                                </span>
+                                    </div>
+                                    <input type="text" class="form-control text-right font-weight-bold"
+                                           disabled
+                                           value="{{ room_obj.noon|safe }}"
+                                           id="price_noon"
+                                           name="price_noon" placeholder="0.00">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm m-0">
+                                    <div class="input-group-prepend">
+                                                <span class="input-group-text p-0 bg-danger"><span
+                                                        class="m-0 ml-1 mr-1">24 HORAS</span>
+                                                </span>
+                                    </div>
+                                    <input type="text" class="form-control text-right font-weight-bold"
+                                           disabled
+                                           value="{{ room_obj.day|safe }}"
+                                           id="price_day"
+                                           name="price_day" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm"
+                                           value="{% if order %}{{ order.client.document }}{% endif %}" id="document"
+                                           name="document"
+                                           placeholder="Nº Documento">
+                                    <input type="hidden" value="{% if order %}{{ order.client.id }}{% endif %}"
+                                           id="client" name="client">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm"
+                                           value="{% if order %}{{ order.client.names }}{% endif %}" id="names"
+                                           name="names"
+                                           placeholder="Nombres y Apellidos">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-phone-alt"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm"
+                                           value="{% if order %}{{ order.client.phone }}{% endif %}" id="phone"
+                                           name="phone"
+                                           placeholder="Nº Celular">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-address-book"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm"
+                                           value="{% if order %}{{ order.client.address }}{% endif %}" id="address"
+                                           name="address"
+                                           placeholder="Direccion de domicilio">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="order_detail">
+                        <div class="col-md-12">
+                            <div class="card card-primary card-outline">
+                                <div class="card-header p-1 pt-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-12 col-md-3 col-lg-3 align-self-center p-1">
+                                            <div class="form-group clearfix text-center mb-1">
+                                                <div class="icheck-primary d-inline">
+                                                    <input type="radio" id="occupy" value="O" name="state" checked>
+                                                    <label for="occupy">
+                                                        Ocupar
+                                                    </label>
+                                                </div>
+                                                <div class="icheck-primary d-inline">
+                                                    <input type="radio" id="reserve" value="R" name="state">
+                                                    <label for="reserve">
+                                                        Reservar
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3 col-lg-3 align-self-center">
+                                            <div class="form-group mb-1">
+                                                <input type="datetime-local" value="
+                                                        {% if order.init %}{{ order.init }}{% else %}{{ date_now }}{% endif %}"
+                                                       class="form-control form-control-sm" id="init"
+                                                       name="init">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3 col-lg-3 align-self-center">
+                                            <div class="form-group mb-1">
+                                                <input type="datetime-local" value="
+                                                        {% if order.end %}{{ order.end }}{% else %}{{ date_now }}{% endif %}"
+                                                       class="form-control form-control-sm" id="end"
+                                                       name="end">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3 col-lg-3">
+                                            <div class="input-group input-group-sm mb-1">
+                                                <div class="input-group-prepend">
+                                                <span class="input-group-text p-0 bg-primary"><span
+                                                        class="m-0 ml-1 mr-1">TOTAL HABITACION</span>
+                                                </span>
+                                                </div>
+                                                <input type="text" class="form-control text-right font-weight-bold"
+                                                       style="width: 100px;"
+                                                       disabled
+                                                       value=""
+                                                       id="total_room"
+                                                       name="total_room" placeholder="0.00">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body p-0">
+                                    <div class="mailbox-controls">
+                                        <!-- Check all button -->
+                                        <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                                class="far fa-square"></i>
+                                        </button>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-sm"
+                                                    onclick="DeleteRowCheck()">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div class="float-right">
+                                            <div class="input-group input-group-sm autocomplete"
+                                                 id="autocomplete-product">
+                                                <input type="text" class="form-control autocomplete-input"
+                                                       id="search-product" placeholder="Buscar producto"
+                                                       name="search-product" style="width: 200px;">
+                                                <div class="input-group-append">
+                                                    <div class="btn btn-primary">
+                                                        <i class="fas fa-search"></i>
+                                                    </div>
+                                                </div>
+                                                <ul class="autocomplete-result-list small"></ul>
+                                            </div>
+                                        </div>
+                                        <!-- /.float-right -->
+                                    </div>
+                                    <div class="table-responsive mailbox-messages">
+                                        <table class="table table-hover table-striped">
+                                            <tbody id="order_detail">
+                                            {% for d in order.orderdetail_set.all %}
+                                                <tr class="p-0" pk="{{ d.id }}" i="{{ forloop.counter }}"
+                                                    store="{{ d.store }}" product="{{ d.product.id }}">
+                                                    <td class="align-middle">
+                                                        <div class="icheck-primary">
+                                                            <input type="checkbox" value="" id="{{ d.id }}">
+                                                            <label for="{{ d.id }}"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="mailbox-star align-middle item-quantity">
+                                                        <div class="input-group input-group-sm">
+                                                            <div class="input-group-prepend">
+                                                                <div class="btn btn-primary btn-prev">
+                                                                    <i class="fa fa-minus-circle"></i>
+                                                                </div>
+                                                            </div>
+                                                            <input type="number" min="0" step="1"
+                                                                   value="{{ d.quantity|safe }}"
+                                                                   class="form-control text-center input-quantity"
+                                                                   placeholder="0">
+                                                            <div class="input-group-append">
+                                                                <div class="btn btn-primary btn-next">
+                                                                    <i class="fa fa-plus-circle"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="mailbox-subject align-middle item-name">
+                                                        <b>Codigo: {{ d.product.code }}</b> -
+                                                        Producto: {{ d.product.name }}...
+                                                    </td>
+                                                    <td class="mailbox-attachment align-middle item-price">
+                                                        <input type="number"
+                                                               class="form-control form-control-sm input-price text-right"
+                                                               style="width: 85px;"
+                                                               value="{{ d.price|safe }}">
+                                                    </td>
+                                                    <td class="align-middle mailbox-date item-amount p-1 text-right">{{ d.amount|safe }}</td>
+                                                    <td class="align-middle detail-delete p-1 text-center item-delete">
+                                                        <button type="button" class="btn btn-danger rounded"><i
+                                                                class="fa fa-trash-alt"></i></button>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.mail-box-messages -->
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer p-0">
+                                    <div class="mailbox-controls">
+                                        <!-- Check all button -->
+                                        <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                            <i class="far fa-square"></i>
+                                        </button>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-sm"
+                                                    onclick="DeleteRowCheck()">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div class="float-right">
+                                            {#                                            <label class="text-primary">TOTAL</label>#}
+                                            <div class="input-group input-group-sm mb-2">
+                                                <div class="input-group-prepend">
+                                                <span class="input-group-text p-0"><span
+                                                        class="small bs-stepper-circle bg-primary m-0 ml-1 mr-1">S/.</span>
+                                                </span>
+                                                </div>
+                                                <input type="text" class="form-control text-right font-weight-bold"
+                                                       style="width: 100px;"
+                                                       disabled
+                                                       id="total"
+                                                       name="total" placeholder="0.00">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer p-0">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer p-1">
+            <button type="button" class="btn btn-success" id="save-order" onclick="CreateOrder()"><i
+                    class="fa fa-cloud-download-alt"></i> Guardar
+            </button>
+            <button type="button" class="btn btn-secondary" id="btn-modal-close" data-dismiss="modal"><i
+                    class="fa fa-cannabis"></i> Cerrar
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'orders/OrderModal.js' %}">
+</script>
