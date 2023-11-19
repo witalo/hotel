@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-b-nlp9wadc(bd94+#-v^m26$p6-l29a6mfa98^^5#6z%190^m0
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ['https://california.up.railway.app', 'https://*.127.0.0.1', 'california.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
