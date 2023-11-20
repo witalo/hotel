@@ -1,0 +1,6 @@
+.card-button:hover {
+    box-shadow: 7px 7px 10px 7px rgba(0, 0, 0, 0.4); /* Cambiar la sombra */
+    /*transition: box-shadow 0.3s ease; !* Agregar transición suave *!*/
+    /*transition: background-color 0.5s ease;*/
+    /* Otros estilos que desees aplicar en el hover */
+}
