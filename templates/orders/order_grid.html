@@ -28,14 +28,27 @@
             <div class="filtr-item col-sm-2 p-1" data-category="{{ r.type.id }}"
                  data-sort="white sample">
                 <a href="{% url 'orders:order_room' r.id %}" class="img-fluid mb-2 w-100">
-                    <div class="ribbon-wrapper ribbon-lg m-1">
-                        <div class="ribbon bg-gradient-purple">
-                            {{ r.type.name }}
+{#                    <div class="ribbon-wrapper ribbon-lg m-1">#}
+{#                        <div class="ribbon bg-gradient-purple">#}
+{#                            {{ r.type.name }}#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="card img-fluid" style="background: {{ r.state.get_color }}; height: 200px; color: #FFFFFF" alt="white sample">
+                        <div class="card-header text-center">
+                            {% if r.oget_order %}
+                                <h5 class="font-weight-bold mb-0">TOTAL S/. {{ r.get_order.total|safe }}</h5>
+                            {% else %}
+                                <h5 class="font-weight-bold mb-0">HABITACION Nº {{ r.number }}</h5>
+                            {% endif %}
+                        </div>
+                        <div class="card-body text-center"><h1 class="font-weight-bold">{{ r.number }}</h1></div>
+                        <div class="card-footer text-center">
+                           <i class="fa fa-tags fa-1x"></i> 24H: S/. {{ r.day|safe }}
                         </div>
                     </div>
-                    <img src="https://via.placeholder.com/300/{{ r.state.color }}//FFFFFF?text={{ r.number }}"
-                         class="img-fluid w-100"
-                         alt="white sample"/>
+{#                    <img src="https://via.placeholder.com/300/{{ r.state.color }}//FFFFFF?text={{ r.number }}"#}
+{#                         class="img-fluid h-100 w-100"#}
+{#                         alt="white sample"/>#}
                 </a>
             </div>
         {% endfor %}
