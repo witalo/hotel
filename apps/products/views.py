@@ -58,6 +58,19 @@ class UpdateProduct(UpdateView):
     form_class = ProductForm
     success_url = reverse_lazy('products:product')
 
+    # def form_valid(self, form):
+    #     # Guarda el formulario pero no lo guarda en la base de datos todavía
+    #     producto = form.save(commit=False)
+    #
+    #     # Obtiene la imagen del formulario
+    #     imagen = self.request.FILES.get('image')
+    #
+    #     # Guarda la imagen en la carpeta 'products' dentro de la carpeta de medios
+    #     producto.image = imagen
+    #     producto.save()
+    #
+    #     return super().form_valid(form)
+
 
 class DeleteProduct(DeleteView):
     model = Product

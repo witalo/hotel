@@ -17,7 +17,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Formulario Producto</h3>
                 </div>
-                <form method="post" id="form-product">
+                <form method="post" id="form-product" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="card-body">
                         {{ form.as_p }}

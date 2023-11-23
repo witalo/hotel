@@ -485,11 +485,11 @@
                 <div class="card-header">
 {#                    <h3 class="card-title text-uppercase">PRODUCTOS</h3>#}
                     <div class="float-right">
-                        <div class="input-group input-group-sm autocomplete"
+                        <div class="input-group input-group-sm"
                              id="autocomplete-product">
-                            <input type="text" class="form-control autocomplete-input"
-                                   id="search-product" placeholder="Buscar producto"
-                                   name="search-product" style="width: 200px;">
+                            <input type="text" class="form-control quicksearch"
+                                   id="search-name" placeholder="Buscar producto"
+                                   name="search-name" style="width: 200px;">
                             <div class="input-group-append">
                                 <div class="btn btn-primary">
                                     <i class="fas fa-search"></i>
@@ -499,30 +499,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body" style="height: 71.2vh; max-height: 71.2vh; overflow: auto;" id="card_product">
+                <div class="card-body" style="height: 72.8vh; max-height: 72.8vh; overflow: auto;" id="card_product">
+                    <div class="row grid">
                     {% for p in product_set %}
-                        <div class="row" pk="{{ p.id }}">
-                            <div class="card card-primary w-100 item-product">
+                            <div class="card card-primary element-item w-100 item-product" data-category="{{ p.name }}">
                                 <div class="ribbon-wrapper ribbon-lg">
                                     <div class="ribbon bg-success">
                                         {{ p.code }}
                                     </div>
                                 </div>
                                 <div class="card-header">
-                                    <h3 class="card-title text-uppercase"><i></i>{{ p.name }}</h3>
+                                    <h3 class="card-title text-uppercase font-weight-bold"><i></i>{{ p.name }}</h3>
                                 </div>
-                                <div class="card-body text-center">
-                                    <img src="{% static 'admin/dist/img/user2-160x160.jpg' %}"
-                                         class="img-circle img-fluid" alt="user-avatar">
+                                <div class="card-body text-center p-1">
+                                    <img src="{% if p.image %}{{ MEDIA_URL }}{{ p.image }}{% else %} {% static 'admin/images/product.jpeg' %}{% endif %}"
+                                         class="img-circle img-fluid" width="160" height="160" alt="Imagen">
+
                                 </div>
                                 <div class="card-footer text-center card-price">
                                     <button type="button" class="btn btn-outline-primary font-weight-bold btn-price"
                                             onclick="AddNewRow({{ p.id }})"><i
-                                            class="fa fa-tags fa-1x"></i> S/. {{ p.price|safe }}</button>
+                                            class="fa fa-tags fa-1x"></i> <b class="h4">S/. {{ p.price|safe }}</b></button>
                                 </div>
                             </div>
-                        </div>
                     {% endfor %}
+                </div>
                 </div>
                 <div class="card-footer"></div>
             </div>

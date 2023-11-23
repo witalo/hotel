@@ -5,6 +5,8 @@ from django.db import models
 # Create your models here.
 from django.forms import model_to_dict
 
+from hotel import settings
+
 
 def get_file_path_product(instance, filename):
     ext = filename.split('.')[-1]
@@ -17,7 +19,7 @@ class Product(models.Model):
     code = models.CharField(max_length=100, blank=False, null=False, unique=True)
     name = models.CharField(max_length=100, blank=False, null=False)
     description = models.TextField(max_length=100, blank=True, null=True, default='')
-    avatar = models.ImageField('Foto', upload_to=get_file_path_product, blank=True, null=True)
+    image = models.ImageField(upload_to='products/', null=True, blank=True)
     product_brand = models.ForeignKey('products.ProductBrand', on_delete=models.CASCADE, default=None)
     price = models.DecimalField('Precio', max_digits=10, decimal_places=2, default=0)
     create_at = models.DateTimeField(auto_now_add=True)
@@ -36,6 +38,10 @@ class Product(models.Model):
 
     def to_json(self):
         dic = model_to_dict(self)
+        return dic
+
+    def get_url(self):
+        dic = settings.MEDIA_URL + settings.MEDIA_ROOT
         return dic
 
     class Meta:

@@ -1,12 +1,23 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from apps.products.models import ProductBrand, Product
+
+
+def validate_size_image(image):
+    if not image:  # Verificar si la imagen es None o no está presente
+        return  # Si no hay imagen, no se realiza la validación del tamaño
+    # Tamaño máximo permitido en bytes (por ejemplo, 2MB)
+    size_maximo = 2 * 1024 * 1024  # 2MB
+
+    if image.size > size_maximo:
+        raise ValidationError("La imagen es demasiado grande. El tamaño máximo permitido es de 2MB.")
 
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['code', 'name', 'description', 'product_brand', 'price', 'is_priority']
+        fields = ['code', 'name', 'description', 'product_brand', 'price', 'is_priority', 'image']
         labels = {
             'code': 'Codigo producto',
             'name': 'Nombre producto',
@@ -14,6 +25,7 @@ class ProductForm(forms.ModelForm):
             'product_brand': 'Marca producto',
             'price': 'Precio producto',
             'is_priority': 'Prioridad producto',
+            'image': 'Foto producto',
         }
         widgets = {
             'code': forms.TextInput(
@@ -72,6 +84,13 @@ class ProductForm(forms.ModelForm):
                     'name': 'is_priority',
                     'required': 'required'
                 }
+            ),
+            'image': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
+                    'id': 'image',
+                    'name': 'image'
+                }
             )
         }
 
@@ -84,6 +103,14 @@ class ProductForm(forms.ModelForm):
         name = self.cleaned_data['name']
         new_name = name.upper()
         return new_name
+
+    # def clean_image(self):
+    #     image = self.cleaned_data.get('image')
+    #     if not image:
+    #         raise forms.ValidationError("Se requiere una imagen.")
+    #     return image
+    #     validate_size_image(image)
+    #     return image
 
 
 class ProductBrandForm(forms.ModelForm):

@@ -55,6 +55,7 @@
                             <th class="align-middle">Precio</th>
                             <th class="align-middle">Prioridad</th>
                             <th class="align-middle">Estado</th>
+                            <th class="align-middle">Foto</th>
                             <th class="align-middle">Acciones</th>
                         </tr>
                         </thead>
@@ -81,6 +82,10 @@
                                     {% else %}
                                         Inactivo
                                     {% endif %}
+                                </td>
+                                <td class="align-middle text-right">
+                                    <img src="{% if p.image %}{{ MEDIA_URL }}{{ p.image }}{% else %} {% static 'admin/images/product.jpeg' %}{% endif %}"
+                                         class="img-circle img-fluid" width="50" height="50" alt="Imagen">
                                 </td>
                                 <td class="align-middle project-actions text-center">
                                     <div class="btn-group">

@@ -802,3 +802,35 @@ $("#total_refund").on("keyup change", function (e) {
         TotalDetail()
     }
 })
+
+let qsRegex;
+let $grid = $('.grid').isotope({
+    itemSelector: '.element-item',
+    layoutMode: 'fitRows',
+    filter: function () {
+        return qsRegex ? $(this).text().match(qsRegex) : true;
+    }
+});
+// {#use value of search field to filter#}
+let $quicksearch = $('.quicksearch').keyup(debounce(function () {
+    qsRegex = new RegExp($quicksearch.val(), 'gi');
+    $grid.isotope();
+}, 200));
+
+// {#debounce so filtering doesn't happen every millisecond#}
+
+function debounce(fn, threshold) {
+    let timeout;
+    threshold = threshold || 100;
+    return function debounced() {
+        clearTimeout(timeout);
+        let args = arguments;
+        let _this = this;
+
+        function delayed() {
+            fn.apply(_this, args);
+        }
+
+        timeout = setTimeout(delayed, threshold);
+    };
+};
