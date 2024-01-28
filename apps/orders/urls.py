@@ -15,4 +15,7 @@ urlpatterns = [
     path('get_orders/', login_required(get_orders), name='get_orders'),
     path('get_orders_month/', login_required(get_orders_month), name='get_orders_month'),
     path('get_room_week/', login_required(get_room_week), name='get_room_week'),
+
+    path('purchase/', login_required(ListPurchase.as_view()), name='purchase'),
+    path('create_purchase/', login_required(create_purchase), name='create_purchase'),
 ]

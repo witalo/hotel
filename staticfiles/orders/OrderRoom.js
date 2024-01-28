@@ -461,39 +461,46 @@ function AddNewRow(p) {
     });
 }
 
+function SearchClient() {
+    let document = $('#document').val();
+    if (document.length === 8 || document.length === 11) {
+        $('#id-loading').css('display', '')
+        $.ajax({
+            url: '/clients/get_client/',
+            dataType: 'json',
+            type: 'GET',
+            data: {'document': document},
+            success: function (response) {
+                if (response.pk) {
+                    $("#client").val(response.pk);
+                    $("#names").val(response.names);
+                    $("#phone").val(response.phone);
+                    $("#address").val(response.address);
+                } else {
+                    toastr.error(response.message)
+                }
+                $('#id-loading').css('display', 'none')
+            },
+            fail: function (response) {
+                toastr.error('Ocurrio un problema en el proceso')
+            }
+        });
+    } else {
+        toastr.warning('Ingrese un dnumero de documento valido');
+        return false;
+    }
+}
+
 $('#document').keypress(function (e) {
     if (e.keyCode === 13) {
         e.preventDefault()
         $(this).trigger("enterKey");
-        let document = $('#document').val();
-        if (document.length === 8 || document.length === 11) {
-            $('#id-loading').css('display', '')
-            $.ajax({
-                url: '/clients/get_client/',
-                dataType: 'json',
-                type: 'GET',
-                data: {'document': document},
-                success: function (response) {
-                    if (response.pk) {
-                        $("#client").val(response.pk);
-                        $("#names").val(response.names);
-                        $("#phone").val(response.phone);
-                        $("#address").val(response.address);
-                    } else {
-                        toastr.error(response.message)
-                    }
-                    $('#id-loading').css('display', 'none')
-                },
-                fail: function (response) {
-                    toastr.error('Ocurrio un problema en el proceso')
-                }
-            });
-        } else {
-            toastr.warning('Ingrese un dnumero de documento valido');
-            return false;
-        }
+        SearchClient()
     }
 });
+function ClickNames(h){
+    ClientSave($(h))
+}
 $('#names').keypress(function (e) {
     if (e.keyCode === 13) {
         e.preventDefault()
@@ -501,7 +508,9 @@ $('#names').keypress(function (e) {
         ClientSave($(this))
     }
 });
-
+function ClickAddress(h){
+    ClientSave($(h))
+}
 $('#address').keypress(function (e) {
     if (e.keyCode === 13) {
         e.preventDefault()
@@ -509,6 +518,9 @@ $('#address').keypress(function (e) {
         ClientSave($(this))
     }
 });
+function ClickPhone(h){
+    ClientSave($(h))
+}
 $('#phone').keypress(function (e) {
     if (e.keyCode === 13) {
         e.preventDefault()
@@ -711,7 +723,17 @@ function AddNewPayment() {
     let code = $('#code').val()
     if (parseFloat(amount) > 0 && parseInt(account) > 0) {
         let total = $('#total').val()
+        if (parseFloat(total) >= 0) {
+            total = parseFloat(total).toFixed(2)
+        } else {
+            total = parseFloat("0.00").toFixed(2)
+        }
         let total_payment = $('#total-payment').val()
+        if (parseFloat(total_payment) >= 0) {
+            total_payment = parseFloat(total_payment).toFixed(2)
+        } else {
+            total_payment = parseFloat("0.00").toFixed(2)
+        }
         if ((parseFloat(total_payment) + parseFloat(amount)) <= parseFloat(total)) {
             AddPayment(0, 0, account, name, amount, code, fechaHoraFormateada)
             $('#amount').val('')
@@ -761,6 +783,41 @@ function CountRowPayment() {
     });
 };
 
+function DeleteRowPayment(i, pk, account) {
+    let rows = $('tbody#detail_payment').find("tr[i=" + i + "][pk=" + pk + "][a=" + account + "]")
+    if (parseInt(pk) > 0) {
+        // let order = $('#id-order').val()
+        // if (order != '' && parseInt(pk) > 0) {
+        //     let r = confirm("¿Esta seguro de eliminar el detalle del pago?")
+        // if (r == true) {
+        //     $.ajax({
+        //         url: '/sales/delete_order_detail/',
+        //         async: true,
+        //         dataType: 'json',
+        //         type: 'GET',
+        //         data: {'pk': pk, 'o': 'I'},
+        //         success: function (response) {
+        //             if (response.success) {
+        //                 rows.remove();
+        //                 CountRow();
+        //                 TotalDetail();
+        //                 toastr.success(response.message)
+        //             } else {
+        //                 toastr.error(response.message)
+        //             }
+        //         },
+        //     });
+        // }
+        // } else {
+        //     toastr.error('Necesita buscar una orden')
+        // }
+    } else {
+        rows.remove();
+        CountRowPayment();
+        TotalDetailPayment();
+    }
+}
+
 function TotalDetailPayment() {
     let total = parseFloat("0.00").toFixed(2);
     $('tbody#detail_payment tr.payment-row td.payment-amount').each(function () {
@@ -778,8 +835,18 @@ $("select#account").on("keyup change", function (e) {
     $(this).attr('pk', val)
     if (parseInt(val) > 0) {
         let total = $('#total').val()
-        let tota_payment = $('#total-payment').val()
-        let amount = parseFloat(total) - parseFloat(tota_payment)
+        if (parseFloat(total) >= 0) {
+            total = parseFloat(total).toFixed(2)
+        } else {
+            total = parseFloat("0.00").toFixed(2)
+        }
+        let total_payment = $('#total-payment').val()
+        if (parseFloat(total_payment) >= 0) {
+            total_payment = parseFloat(total_payment).toFixed(2)
+        } else {
+            total_payment = parseFloat("0.00").toFixed(2)
+        }
+        let amount = parseFloat(total) - parseFloat(total_payment)
         $('#amount').val(parseFloat(amount).toFixed(2))
     } else {
         $('#amount').val('')

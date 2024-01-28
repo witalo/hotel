@@ -18,7 +18,7 @@ from apps.accounts.views import create_payment
 from apps.clients.models import Client
 from apps.orders.models import Order, OrderDetail
 from apps.products.models import Product, ProductStore
-from apps.products.views import store_output
+from apps.products.views import store_output, store_input
 from apps.rooms.models import RoomGroup, RoomType, Room, RoomState
 from apps.users.models import User
 from hotel import settings
@@ -346,3 +346,131 @@ def get_room_week(request):
             'output': output,
             'days': days
         }, status=HTTPStatus.OK)
+
+
+class ListPurchase(ListView):
+    model = Order
+    template_name = 'orders/purchase.html'
+    context_object_name = 'order_set'
+    my_date = datetime.now()
+
+    def get_queryset(self):
+        return Order.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['group_set'] = self.get_queryset()
+        context['type_set'] = self.model._meta.get_field('type').choices
+        context['date_now'] = self.my_date.strftime("%Y-%m-%d")
+        context['account_set'] = Account.objects.all()
+
+        return context
+
+
+@csrf_exempt
+def create_purchase(request):
+    if request.method == 'POST':
+        order_json = request.POST.get('order', '')
+        order = json.loads(order_json)
+        client = order['client']
+        if int(client) > 0:
+            client_obj = Client.objects.get(id=int(client))
+        else:
+            client_obj = None
+        date = order['date']
+        user = request.user.id
+        user_obj = User.objects.get(id=user)
+        subsidiary_obj = user_obj.subsidiary
+        types = order['type']
+        pk = order['order']
+        if int(pk) > 0:
+            pk = int(pk)
+        else:
+            pk = None
+        obj, created = Order.objects.update_or_create(
+            id=pk,
+            defaults={
+                "type": types,
+                "number": get_correlative(subsidiary=subsidiary_obj, types=types, order=pk),
+                "current": date,
+                "user": user_obj,
+                "client": client_obj,
+                "subsidiary": subsidiary_obj,
+                "status": 'C'
+            })
+        if obj:
+            for d in order['Detail']:
+                detail = d['detail']
+                product = d['product']
+                product_obj = None
+                if int(product) > 0:
+                    product_obj = Product.objects.get(id=int(product))
+                else:
+                    product_obj = None
+                description = d['description']
+                quantity = d['quantity']
+                if float(quantity) > 0:
+                    quantity = decimal.Decimal(quantity)
+                else:
+                    quantity = decimal.Decimal(0.00)
+                price = d['price']
+                if float(price) > 0:
+                    price = decimal.Decimal(price)
+                else:
+                    price = decimal.Decimal(0.00)
+                store = d['store']
+                store_obj = None
+                if int(store) > 0:
+                    store_obj = ProductStore.objects.get(id=int(store))
+                else:
+                    store_obj = None
+                dk = None
+                if int(detail) > 0:
+                    dk = int(detail)
+                else:
+                    dk = None
+                detail_obj, detail_created = OrderDetail.objects.update_or_create(
+                    id=dk,
+                    defaults={
+                        "order": obj,
+                        "product": product_obj,
+                        "description": description,
+                        "quantity": quantity,
+                        "old_quantity": quantity,
+                        "price": price,
+                        "store": store_obj
+                    })
+                if detail_obj:
+                    if detail_created and detail_obj.product:
+                        store_input(detail=detail_obj)
+            for p in order['Payment']:
+                payment = p['payment']
+                if int(payment) > 0:
+                    payment = int(payment)
+                else:
+                    payment = None
+                account = p['account']
+                account_obj = None
+                if int(account) > 0:
+                    account_obj = Account.objects.get(id=int(account))
+                else:
+                    account_obj = None
+                code = p['code']
+                amount = p['amount']
+                if float(amount) > 0:
+                    amount = decimal.Decimal(amount)
+                else:
+                    amount = decimal.Decimal(0.00)
+                create_payment(order=obj, pk=payment, account=account_obj, code=code, user=user_obj, amount=amount)
+            return JsonResponse({
+                'success': True,
+                'order': obj.id,
+                'message': 'Operacion exitosa'
+            }, status=HTTPStatus.OK)
+        else:
+            return JsonResponse({
+                'success': False,
+                'message': 'Ocurrio un problema en el proceso'
+            }, status=HTTPStatus.OK)
+    else:
+        return JsonResponse({'message': 'Error de peticion.'}, status=HTTPStatus.BAD_REQUEST)

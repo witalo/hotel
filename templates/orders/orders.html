@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body" id="orders-grid">
+                <div class="card-body table-responsive mailbox-messages" id="orders-grid">
                     {% include "orders/orders_grid.html" %}
                 </div>
             </div>
@@ -52,12 +52,15 @@
     </div>
     <div class="modal fade" id="pdfModal" tabindex="-1" data-backdrop="static" data-keyboard="false"
          aria-labelledby="pdfModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
-                <div class="modal-header bg-danger">
-                    <h6 class="modal-title">DOCUMENTO</h6>
+                <div class="modal-header bg-primary p-2">
+                    <h6 class="modal-title">TICKET</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-2">
                     <iframe src="" width="100%" height="680px" id="pdfFrame"></iframe>
                 </div>
                 <div class="modal-footer">

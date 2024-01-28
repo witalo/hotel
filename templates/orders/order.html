@@ -22,9 +22,9 @@
                             {#                                        <p class="page-month">{{ g.name }}</p>#}
                             {#                                    </a>#}
                             {#                                </li>#}
-                            <a class="btn  btn-outline-primary btn-app font-weight-bold border-primary" onclick="ReloadRoom({{ g.id }})">
+                            <a class="btn  btn-outline-primary btn-app bungee font-weight-bold border-primary" onclick="ReloadRoom({{ g.id }})">
                                 {#                                <span class="badge bg-success">{{ g.name }}</span>#}
-                                <i class="fa fa-desktop fa-2x"></i> {{ g.name }}
+                                <i class="fa fa-desktop fa-2x pb-1"></i> {{ g.name }}
                             </a>
                         {% endfor %}
                         {#                            #}
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-     <div class="modal fade" id="modal-order" tabindex="-1" role="dialog" data-backdrop="static"
+    <div class="modal fade" id="modal-order" tabindex="-1" role="dialog" data-backdrop="static"
          aria-labelledby="ModalHelpTitle"
          aria-hidden="true"></div>
 {% endblock body %}

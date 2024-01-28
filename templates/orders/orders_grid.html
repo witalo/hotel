@@ -8,7 +8,7 @@
         <td class="align-middle">FECHA:HORA</td>
         <td class="align-middle">CLIENTE/PROVEEDOR</td>
         <td class="align-middle">USUARIO</td>
-        <td class="align-middle">TICKETS</td>
+        <td class="align-middle">DETALLES/DOCUMENTOS</td>
         <td class="align-middle">TOTAL</td>
     </tr>
     </thead>
@@ -34,11 +34,15 @@
                 {% endif %}
             </td>
             <td class="align-middle p-1">
+            {% if o.type == 'C' or o.type == 'C' %}
+                {{ o.current }}
+            {% else %}
                 FI:{{ o.init|date:'d/m/Y h:i A' }}<br>
                 FT:{{ o.end|date:'d/m/Y h:i A' }}<br>
                 {% if o.refund %}
                     FR:{{ o.date_refund|date:'d/m/Y h:i A' }}
                 {% endif %}
+            {% endif %}
             </td>
             <td class="align-middle p-1 text-left text-uppercase">
                 {% if o.client %}
@@ -52,9 +56,30 @@
             <td class="align-middle p-1">
                 <i class="fa fa-male fa-1x"></i>:{{ o.user.username }}
             </td>
-           <td class="align-middle p-1">
-                <button type="button" class="btn btn-sm btn-outline-warning" onclick="Ticket({{ o.id }})"><i class="fa fa-cloud-download-alt"></i> Ticket Habitacion</button>
-                <button type="button" class="btn btn-sm btn-outline-warning" onclick="TicketRefund({{ o.id }})"><i class="fa fa-cloud-download-alt"></i> Ticket Reintegro</button>
+            <td class="align-middle p-1">
+                {% if o.type == 'C' or o.type == 'C' %}
+                    <table class="table table-hover table-striped">
+                        <tbody>
+                        {% for d in o.orderdetail_set.all %}
+                            <tr>
+                                <td class="align-middle p-1 text-center">{{ forloop.counter }}</td>
+                                <td class="align-middle p-1">
+                                    {% if d.product %}{{ d.product.name }}{% else %}{{ d.description }}{% endif %}</td>
+                                <td class="align-middle p-1 text-right">{{ d.quantity|safe }}</td>
+                                <td class="align-middle p-1 text-right">{{ d.price|safe }}</td>
+                                <td class="align-middle p-1 text-right">{{ d.total|safe }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <button type="button" class="btn btn-sm btn-outline-warning" onclick="Ticket({{ o.id }})"><i
+                            class="fa fa-cloud-download-alt"></i> Ticket Habitacion
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-warning" onclick="TicketRefund({{ o.id }})"><i
+                            class="fa fa-cloud-download-alt"></i> Ticket Reintegro
+                    </button>
+                {% endif %}
             </td>
             <td class="align-middle p-1 text-right font-weight-bold"><span
                     class="float-left">S/.</span> {{ o.total|safe }}</td>
