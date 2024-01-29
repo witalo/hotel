@@ -7,8 +7,8 @@ __pycache__
 # Backup files #
 *.bak
 hotel/settings.py
-#static
+static
 migrations
 .idea
-#media
-#requirements.txt
+media
+requirements.txt
