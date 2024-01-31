@@ -223,6 +223,9 @@ def create_order(request):
 def order_room(request, pk):
     if request.method == 'GET':
         my_date = datetime.now()
+        print("Fecha 1:", my_date)
+        i_date = timezone.now()
+        print("Fecha 2:", i_date)
         room_obj = Room.objects.get(id=int(pk))
         product_set = Product.objects.filter(is_state=True)
         account_set = Account.objects.filter(is_state=True)
@@ -232,7 +235,8 @@ def order_room(request, pk):
             'account_set': account_set,
             'order': room_obj.get_order(),
             'state_set': RoomState._meta.get_field('type').choices,
-            'date_now': my_date.strftime("%Y-%m-%dT%H:%M")
+            'date_now': my_date.strftime("%Y-%m-%dT%H:%M"),
+            'i_date': i_date.strftime("%Y-%m-%dT%H:%M"),
         })
 
 

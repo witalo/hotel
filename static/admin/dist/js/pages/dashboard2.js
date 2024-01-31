@@ -23,8 +23,8 @@ $(function () {
                     datasets: [
                         {
                             label: 'Total Venta, Alquiler y Salida',
-                            backgroundColor: 'rgba(60,141,188,0.9)',
-                            borderColor: 'rgba(60,141,188,0.8)',
+                            backgroundColor: 'rgba(75,163,212,0.9)',
+                            borderColor: 'rgba(5,148,231,0.8)',
                             pointRadius: true,
                             pointColor: '#3b8bba',
                             pointStrokeColor: 'rgba(60,141,188,1)',
@@ -34,8 +34,8 @@ $(function () {
                         },
                         {
                             label: 'Total Compra y Entrada',
-                            backgroundColor: 'rgba(210, 214, 222, 1)',
-                            borderColor: 'rgba(210, 214, 222, 1)',
+                            backgroundColor: 'rgb(232,84,97)',
+                            borderColor: 'rgb(227,52,52)',
                             pointRadius: true,
                             pointColor: 'rgba(210, 214, 222, 1)',
                             pointStrokeColor: '#c1c7d1',
@@ -50,7 +50,7 @@ $(function () {
                     maintainAspectRatio: false,
                     responsive: true,
                     legend: {
-                        display: false
+                        display: true
                     },
                     scales: {
                         xAxes: [{
