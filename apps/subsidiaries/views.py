@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from .forms import SubsidiaryForm
 from .models import Subsidiary
+from ..orders.models import Order
 from ..products.models import Product
 from ..users.models import User
 
@@ -15,16 +16,18 @@ class Home(TemplateView):
     def get_context_data(self, **kwargs):
         user_id = self.request.user.id
         user_obj = User.objects.get(id=user_id)
-        product = Product.objects.all()
+        product = Product.objects.filter(is_state=True)
         subsidiary = user_obj.subsidiary
-        user = User.objects.all()
+        user = User.objects.filter(is_active=True)
+        order_set = Order.objects.filter(status='C', type='A')
         date = datetime.now()
         if user_id is not None:
             context = {
                 'users': user.count(),
                 'products': product.count(),
+                'orders': order_set.count(),
                 'date': date,
-                'user_set': user
+                # 'user_set': user
             }
             return context
         else:
