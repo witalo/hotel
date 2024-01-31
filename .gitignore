@@ -10,5 +10,5 @@ hotel/settings.py
 static
 migrations
 .idea
-media
+#media
 requirements.txt
